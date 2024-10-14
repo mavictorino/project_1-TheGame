@@ -4,12 +4,34 @@
     border: solid black;
     display: flex;
     flex-wrap: wrap;
-
+    
 }
 
 .grid div {
     width: 20px;
     height: 20px;
-    border: solid red;
+    
+}
+
+.food {
+    background-color: #7FD1B9;
     box-sizing: border-box;
+    border: 6px solid white;
+}
+
+.pacman {
+    background-color: #DBAD6A;
+}
+
+.wall {
+    background-color: #96897B;
+}
+
+.enemies {
+    background-color: #DF367C;
+}
+
+.superfood {
+    background-color: #7FD1B9;
+    border-radius: 10px;
 }
