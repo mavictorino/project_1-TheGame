@@ -67,3 +67,10 @@ function createGameSpace() {
     }
 }
 createGameSpace();
+
+// creating pacman: - need to determine the div index to position pacman in the middle // index = (row * column) + column 
+
+let pacmanCurrentIndex = 490;
+squares[pacmanCurrentIndex].classList.add("pacman");
+
+

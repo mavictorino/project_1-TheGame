@@ -20,7 +20,8 @@
 }
 
 .pacman {
-    background-color: #DBAD6A;
+    background-color: orange;
+    border-radius: 10px;
 }
 
 .wall {
