@@ -1,0 +1,15 @@
+.grid {
+    width: 560px; /* each square has 20x20 */
+    height: 560px;
+    border: solid black;
+    display: flex;
+    flex-wrap: wrap;
+
+}
+
+.grid div {
+    width: 20px;
+    height: 20px;
+    border: solid red;
+    box-sizing: border-box;
+}
