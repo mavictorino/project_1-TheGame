@@ -130,3 +130,51 @@ function eatSuperfood() {
     }
 };
 
+// creating enemies
+
+let enemy1CurrentIndex = 348;
+squares[enemy1CurrentIndex].classList.add("enemy1");
+
+let enemy2CurrentIndex = 351;
+squares[enemy2CurrentIndex].classList.add("enemy2");
+
+let enemy3CurrentIndex = 376;
+squares[enemy3CurrentIndex].classList.add("enemy3");
+
+let enemy4CurrentIndex = 379;
+squares[enemy4CurrentIndex].classList.add("enemy4");
+
+
+// moving enemies
+
+const enemiesDirections = [-1, 1, -width, width]; 
+
+function moveEnemy(enemyIndex, enemyClass) {
+    const randomDirection = enemiesDirections[Math.floor(Math.random() * enemiesDirections.length)];
+    const nextIndex = enemyIndex + randomDirection;
+
+    //check wall colision
+    if (!squares[nextIndex].classList.contains("wall")) {
+        squares[enemyIndex].classList.remove(enemyClass);
+        enemyIndex = nextIndex;
+        squares[enemyIndex].classList.add(enemyClass);
+    }
+    return enemyIndex; 
+}
+// seting the intervals for movement
+
+setInterval(function() {
+    enemy1CurrentIndex = moveEnemy(enemy1CurrentIndex, "enemy1");
+}, 150);
+
+setInterval(function() {
+    enemy2CurrentIndex = moveEnemy(enemy2CurrentIndex, "enemy2");
+}, 150);
+
+setInterval(function() {
+    enemy3CurrentIndex = moveEnemy(enemy3CurrentIndex, "enemy3");
+}, 150);
+
+setInterval(function() {
+    enemy4CurrentIndex = moveEnemy(enemy4CurrentIndex, "enemy4");
+}, 150);

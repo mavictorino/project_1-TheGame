@@ -28,11 +28,32 @@
     background-color: #96897B;
 }
 
-.enemies {
-    background-color: #DF367C;
-}
-
 .superfood {
     background-color: #7FD1B9;
     border-radius: 10px;
 }
+
+.enemy1 {
+    background-color: #DF367C;
+    box-sizing: border-box;
+    border: 1px solid black;
+}
+
+.enemy2 {
+    background-color: #850339;
+    box-sizing: border-box;
+    border: 1px solid black;
+}
+
+.enemy3 {
+    background-color: #f57bae;
+    box-sizing: border-box;
+    border: 1px solid black;
+}
+
+.enemy4 {
+    background-color: #570225;
+    box-sizing: border-box;
+    border: 1px solid black;
+}
+
