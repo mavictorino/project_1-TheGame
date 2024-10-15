@@ -159,22 +159,38 @@ function moveEnemy(enemyIndex, enemyClass) {
         enemyIndex = nextIndex;
         squares[enemyIndex].classList.add(enemyClass);
     }
+    if (enemyIndex === pacmanCurrentIndex) {
+        gameOver();
+    }
     return enemyIndex; 
 }
 // seting the intervals for movement
 
-setInterval(function() {
+let enemy1Interval = setInterval(function() {
     enemy1CurrentIndex = moveEnemy(enemy1CurrentIndex, "enemy1");
 }, 150);
 
-setInterval(function() {
+let enemy2Interval = setInterval(function() {
     enemy2CurrentIndex = moveEnemy(enemy2CurrentIndex, "enemy2");
 }, 150);
 
-setInterval(function() {
+let enemy3Interval = setInterval(function() {
     enemy3CurrentIndex = moveEnemy(enemy3CurrentIndex, "enemy3");
 }, 150);
 
-setInterval(function() {
+let enemy4Interval = setInterval(function() {
     enemy4CurrentIndex = moveEnemy(enemy4CurrentIndex, "enemy4");
 }, 150);
+
+// game over scenarios
+
+function gameOver() {
+    clearInterval(enemy1Interval);
+    clearInterval(enemy2Interval);
+    clearInterval(enemy3Interval);
+    clearInterval(enemy4Interval);
+    document.removeEventListener('keydown', movePacman);
+    alert(`Game Over!`);
+    location.reload();
+};
+
