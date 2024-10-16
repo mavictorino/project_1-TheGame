@@ -118,6 +118,7 @@ function eatFood() {
         pointsDisplay.innerHTML = points;
         squares[pacmanCurrentIndex].classList.remove("food")
     }
+    gameWin();
 };
 
 // pacman eating superfood
@@ -128,6 +129,7 @@ function eatSuperfood() {
         pointsDisplay.innerHTML = points;
         squares[pacmanCurrentIndex].classList.remove("superfood")
     }
+    gameWin();
 };
 
 // creating enemies
@@ -153,7 +155,7 @@ function moveEnemy(enemyIndex, enemyClass) {
     const randomDirection = enemiesDirections[Math.floor(Math.random() * enemiesDirections.length)];
     const nextIndex = enemyIndex + randomDirection;
 
-    //check wall colision
+    //check wall and enemy colision
     if (!squares[nextIndex].classList.contains("wall")) {
         squares[enemyIndex].classList.remove(enemyClass);
         enemyIndex = nextIndex;
@@ -190,7 +192,31 @@ function gameOver() {
     clearInterval(enemy3Interval);
     clearInterval(enemy4Interval);
     document.removeEventListener('keydown', movePacman);
-    alert(`Game Over!`);
-    location.reload();
+    document.getElementById("gameover").style.display = "block";
+
+}
+
+document.getElementById("btn-restart").addEventListener("click", function () {
+    location.reload(); 
+});
+
+function gameWin() {
+    if (points > 313) {
+        clearInterval(enemy1Interval);
+        clearInterval(enemy2Interval);
+        clearInterval(enemy3Interval);
+        clearInterval(enemy4Interval);
+        document.removeEventListener('keydown', movePacman);
+        document.getElementById("wins").style.display = "block";
+
+    }
 };
 
+document.getElementById("btn-tryagain").addEventListener("click", function () {
+    location.reload(); 
+});
+
+/* const foodCount = gridLayout.filter(item => item === 0).length;
+const superfoodCount = gridLayout.filter(item => item === 3).length
+console.log(`Food count: ${foodCount}`);
+console.log(`Superfood count: ${superfoodCount}`); */

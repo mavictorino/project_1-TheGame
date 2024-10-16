@@ -1,10 +1,20 @@
+
+
 .grid {
     width: 560px; /* each square has 20x20 */
     height: 560px;
     border: solid black;
     display: flex;
     flex-wrap: wrap;
-    
+    justify-content: center;
+    margin: 0 auto;
+    align-items: center;
+}
+
+h1, h3 {
+    text-align: center;
+    color: #850339;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
 
 .grid div {
@@ -25,7 +35,8 @@
 }
 
 .wall {
-    background-color: #96897B;
+    background: rgb(238,174,202);
+    background: linear-gradient(90deg, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
 }
 
 .superfood {
@@ -57,3 +68,48 @@
     border: 1px solid black;
 }
 
+#gameover { 
+    display: none; 
+    text-align: center; 
+    position: absolute; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    font-size: 90px; 
+    font-weight: bold; 
+    color: #DF367C; 
+    background-color: aqua;
+    
+} 
+
+#btn-restart {
+    position: absolute; 
+    top: 100%; 
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #7FD1B9;
+    border: 1px solid #850339;
+}
+
+#wins { 
+    display: none; 
+    text-align: center; 
+    position: absolute; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    font-size: 70px; 
+    font-weight: bold; 
+    color: #DF367C; 
+    background-color: aqua;
+    
+} 
+
+#btn-tryagain {
+    position: absolute; 
+    top: 100%; 
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #7FD1B9;
+    border: 1px solid #850339;
+}
