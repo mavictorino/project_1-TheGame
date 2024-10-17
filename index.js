@@ -11,7 +11,7 @@ const gridLayout = [
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
     1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
     1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1,
-    1, 3, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1 ,0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 3, 1,
+    1, 3, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 3, 1,
     1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1,
     1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
     1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1,
@@ -69,154 +69,154 @@ function createGameSpace() {
 }
 createGameSpace();
 
-// creating pacman: - need to determine the square.id to position pacman in the middle 
+document.getElementById("startGameBtn").addEventListener("click", function () {
+    document.getElementById("instructions").style.display = "none";
 
-let pacmanCurrentIndex = 489;
-squares[pacmanCurrentIndex].classList.add("pacman");
+    // creating pacman: - need to determine the square.id to position pacman in the middle 
 
-//moving pacman
+    let pacmanCurrentIndex = 489;
+    squares[pacmanCurrentIndex].classList.add("pacman");
 
-const directions = {
-    "ArrowLeft": -1,
-    "ArrowRight": +1,
-    //in a 2d array the vertical movement will be defined by the length
-    "ArrowUp": -width, 
-    "ArrowDown": width,
-};
+    //moving pacman
 
-function movePacman(e) {
-    const direction = directions[e.key];
-    if (direction === undefined) return;
+    const directions = {
+        "ArrowLeft": -1,
+        "ArrowRight": +1,
+        //in a 2d array the vertical movement will be defined by the length
+        "ArrowUp": -width,
+        "ArrowDown": width,
+    };
 
-    const nextIndex = pacmanCurrentIndex + direction;
+    function movePacman(e) {
+        const direction = directions[e.key];
+        if (direction === undefined) return;
 
-    //check wall collision
-    if (!squares[nextIndex].classList.contains("wall")) {
-        squares[pacmanCurrentIndex].classList.remove("pacman");
-        
-        pacmanCurrentIndex = nextIndex;
+        const nextIndex = pacmanCurrentIndex + direction;
 
-        //pass tunnels
-        if (pacmanCurrentIndex === 364) {
-            pacmanCurrentIndex = 391; 
-        } else if (pacmanCurrentIndex === 391) {
-            pacmanCurrentIndex = 364; 
+        //check wall collision
+        if (!squares[nextIndex].classList.contains("wall")) {
+            squares[pacmanCurrentIndex].classList.remove("pacman");
+
+            pacmanCurrentIndex = nextIndex;
+
+            //pass tunnels
+            if (pacmanCurrentIndex === 364) {
+                pacmanCurrentIndex = 391;
+            } else if (pacmanCurrentIndex === 391) {
+                pacmanCurrentIndex = 364;
+            }
+            squares[pacmanCurrentIndex].classList.add("pacman");
         }
-        squares[pacmanCurrentIndex].classList.add("pacman");
+        eatFood();
+        eatSuperfood();
+    };
+
+    document.addEventListener('keydown', movePacman);
+
+    // pacman eating food
+
+    function eatFood() {
+        if (squares[pacmanCurrentIndex].classList.contains("food")) {
+            points++;
+            pointsDisplay.innerHTML = points;
+            squares[pacmanCurrentIndex].classList.remove("food")
+        }
+        gameWin();
+    };
+
+    // pacman eating superfood
+
+    function eatSuperfood() {
+        if (squares[pacmanCurrentIndex].classList.contains("superfood")) {
+            points += 20;
+            pointsDisplay.innerHTML = points;
+            squares[pacmanCurrentIndex].classList.remove("superfood")
+
+        }
+        gameWin();
+    };
+
+    // creating enemies
+
+    let enemy1CurrentIndex = 348;
+    squares[enemy1CurrentIndex].classList.add("enemy1");
+
+    let enemy2CurrentIndex = 351;
+    squares[enemy2CurrentIndex].classList.add("enemy2");
+
+    let enemy3CurrentIndex = 376;
+    squares[enemy3CurrentIndex].classList.add("enemy3");
+
+    let enemy4CurrentIndex = 379;
+    squares[enemy4CurrentIndex].classList.add("enemy4");
+
+
+    // moving enemies
+
+    const enemiesDirections = [-1, 1, -width, width];
+
+    function moveEnemy(enemyCurrentIndex, enemyClass) {
+        const randomDirection = enemiesDirections[Math.floor(Math.random() * enemiesDirections.length)];
+        const nextIndex = enemyCurrentIndex + randomDirection;
+
+        //check wall and enemy colision
+        if (!squares[nextIndex].classList.contains("wall")) {
+            squares[enemyCurrentIndex].classList.remove(enemyClass);
+            enemyCurrentIndex = nextIndex;
+            squares[enemyCurrentIndex].classList.add(enemyClass);
+        }
+        if (enemyCurrentIndex === pacmanCurrentIndex) {
+            gameOver();
+        }
+        return enemyCurrentIndex;
     }
-    eatFood();
-    eatSuperfood();
-};
+    // seting the intervals for enemies movement
 
-document.addEventListener('keydown', movePacman);
+    let enemy1Interval = setInterval(function () {
+        enemy1CurrentIndex = moveEnemy(enemy1CurrentIndex, "enemy1");
+    }, 150);
 
-// pacman eating food
+    let enemy2Interval = setInterval(function () {
+        enemy2CurrentIndex = moveEnemy(enemy2CurrentIndex, "enemy2");
+    }, 150);
 
-function eatFood() {
-    if (squares[pacmanCurrentIndex].classList.contains("food")) {
-        points++;
-        pointsDisplay.innerHTML = points;
-        squares[pacmanCurrentIndex].classList.remove("food")
-    }
-    gameWin();
-};
+    let enemy3Interval = setInterval(function () {
+        enemy3CurrentIndex = moveEnemy(enemy3CurrentIndex, "enemy3");
+    }, 150);
 
-// pacman eating superfood
+    let enemy4Interval = setInterval(function () {
+        enemy4CurrentIndex = moveEnemy(enemy4CurrentIndex, "enemy4");
+    }, 150);
 
-function eatSuperfood() {
-    if(squares[pacmanCurrentIndex].classList.contains("superfood")) {
-        points += 20;
-        pointsDisplay.innerHTML = points;
-        squares[pacmanCurrentIndex].classList.remove("superfood")
-    }
-    gameWin();
-};
+    // game over scenarios
 
-// creating enemies
-
-let enemy1CurrentIndex = 348;
-squares[enemy1CurrentIndex].classList.add("enemy1");
-
-let enemy2CurrentIndex = 351;
-squares[enemy2CurrentIndex].classList.add("enemy2");
-
-let enemy3CurrentIndex = 376;
-squares[enemy3CurrentIndex].classList.add("enemy3");
-
-let enemy4CurrentIndex = 379;
-squares[enemy4CurrentIndex].classList.add("enemy4");
-
-
-// moving enemies
-
-const enemiesDirections = [-1, 1, -width, width]; 
-
-function moveEnemy(enemyIndex, enemyClass) {
-    const randomDirection = enemiesDirections[Math.floor(Math.random() * enemiesDirections.length)];
-    const nextIndex = enemyIndex + randomDirection;
-
-    //check wall and enemy colision
-    if (!squares[nextIndex].classList.contains("wall")) {
-        squares[enemyIndex].classList.remove(enemyClass);
-        enemyIndex = nextIndex;
-        squares[enemyIndex].classList.add(enemyClass);
-    }
-    if (enemyIndex === pacmanCurrentIndex) {
-        gameOver();
-    }
-    return enemyIndex; 
-}
-// seting the intervals for movement
-
-let enemy1Interval = setInterval(function() {
-    enemy1CurrentIndex = moveEnemy(enemy1CurrentIndex, "enemy1");
-}, 150);
-
-let enemy2Interval = setInterval(function() {
-    enemy2CurrentIndex = moveEnemy(enemy2CurrentIndex, "enemy2");
-}, 150);
-
-let enemy3Interval = setInterval(function() {
-    enemy3CurrentIndex = moveEnemy(enemy3CurrentIndex, "enemy3");
-}, 150);
-
-let enemy4Interval = setInterval(function() {
-    enemy4CurrentIndex = moveEnemy(enemy4CurrentIndex, "enemy4");
-}, 150);
-
-// game over scenarios
-
-function gameOver() {
-    clearInterval(enemy1Interval);
-    clearInterval(enemy2Interval);
-    clearInterval(enemy3Interval);
-    clearInterval(enemy4Interval);
-    document.removeEventListener('keydown', movePacman);
-    document.getElementById("gameover").style.display = "block";
-
-}
-
-document.getElementById("btn-restart").addEventListener("click", function () {
-    location.reload(); 
-});
-
-function gameWin() {
-    if (points > 313) {
+    function gameOver() {
         clearInterval(enemy1Interval);
         clearInterval(enemy2Interval);
         clearInterval(enemy3Interval);
         clearInterval(enemy4Interval);
         document.removeEventListener('keydown', movePacman);
-        document.getElementById("wins").style.display = "block";
+        document.getElementById("gameover").style.display = "block";
 
     }
-};
 
-document.getElementById("btn-tryagain").addEventListener("click", function () {
-    location.reload(); 
+    document.getElementById("btn-restart").addEventListener("click", function () {
+        location.reload();
+    });
+
+    function gameWin() {
+        if (points > 313) {
+            clearInterval(enemy1Interval);
+            clearInterval(enemy2Interval);
+            clearInterval(enemy3Interval);
+            clearInterval(enemy4Interval);
+            document.removeEventListener('keydown', movePacman);
+            document.getElementById("wins").style.display = "block";
+
+        }
+    };
+
+    document.getElementById("btn-tryagain").addEventListener("click", function () {
+        location.reload();
+    });
 });
-
-/* const foodCount = gridLayout.filter(item => item === 0).length;
-const superfoodCount = gridLayout.filter(item => item === 3).length
-console.log(`Food count: ${foodCount}`);
-console.log(`Superfood count: ${superfoodCount}`); */
