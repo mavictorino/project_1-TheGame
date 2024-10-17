@@ -4,6 +4,7 @@ let points = 0;
 const width = 28;
 const grid = document.querySelector(".grid");
 let enemiesFrozen = false;
+let hasWon = false;
 
 
 // 0 - food | 1 - wall | 2 - enemies cave | 3 - superfood | 4 - empty 
@@ -121,7 +122,7 @@ document.getElementById("startGameBtn").addEventListener("click", function () {
             pointsDisplay.innerHTML = points;
             squares[pacmanCurrentIndex].classList.remove("food")
         }
-        gameWin();
+        checkForGameWin();
     };
 
     // pacman eating superfood
@@ -138,24 +139,23 @@ document.getElementById("startGameBtn").addEventListener("click", function () {
             clearInterval(enemy4Interval);
 
             if (!enemiesFrozen) {
-                
-                clearInterval(enemy1Interval);
-                clearInterval(enemy2Interval);
-                clearInterval(enemy3Interval);
-                clearInterval(enemy4Interval);
 
                 enemiesFrozen = true;
 
                 //5 seconds freeze enemies
                 setTimeout(() => {
-                    restartEnemyMovement();
-                    enemiesFrozen = false; 
+                    
+                    if (!hasWon) {
+                        restartEnemyMovement();
+                        enemiesFrozen = false;
+                    }
                 }, 5000);
+
             }
 
 
         }
-        gameWin();
+        checkForGameWin();
     };
 
     // creating enemies
@@ -188,7 +188,7 @@ document.getElementById("startGameBtn").addEventListener("click", function () {
             squares[enemyCurrentIndex].classList.add(enemyClass);
         }
         if (enemyCurrentIndex === pacmanCurrentIndex) {
-            gameOver();
+            checkForGameOver();
         }
         return enemyCurrentIndex;
     }
@@ -232,7 +232,7 @@ document.getElementById("startGameBtn").addEventListener("click", function () {
 
     // game over scenarios
 
-    function gameOver() {
+    function checkForGameOver() {
         clearInterval(enemy1Interval);
         clearInterval(enemy2Interval);
         clearInterval(enemy3Interval);
@@ -246,8 +246,9 @@ document.getElementById("startGameBtn").addEventListener("click", function () {
         location.reload();
     });
 
-    function gameWin() {
+    function checkForGameWin() {
         if (points > 313) {
+            hasWon = true;
             clearInterval(enemy1Interval);
             clearInterval(enemy2Interval);
             clearInterval(enemy3Interval);
@@ -255,7 +256,7 @@ document.getElementById("startGameBtn").addEventListener("click", function () {
             document.removeEventListener('keydown', movePacman);
             document.getElementById("wins").style.display = "block";
 
-        }
+        };
     };
 
     document.getElementById("btn-tryagain").addEventListener("click", function () {
