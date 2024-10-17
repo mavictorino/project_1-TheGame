@@ -3,7 +3,7 @@ const pointsDisplay = document.getElementById("points");
 let points = 0;
 const width = 28;
 const grid = document.querySelector(".grid");
-
+let enemiesFrozen = false;
 
 
 // 0 - food | 1 - wall | 2 - enemies cave | 3 - superfood | 4 - empty 
@@ -19,7 +19,7 @@ const gridLayout = [
     1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
     1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1,
     1, 1, 1, 1, 1, 1, 0, 1, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 1, 0, 1, 1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1, 1, 0, 1, 1, 4, 1, 1, 1, 2, 2, 1, 1, 1, 4, 1, 1, 0, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 0, 1, 1, 4, 1, 1, 2, 2, 2, 2, 1, 1, 4, 1, 1, 0, 1, 1, 1, 1, 1, 1,
     1, 1, 1, 1, 1, 1, 0, 1, 1, 4, 1, 2, 2, 2, 2, 2, 2, 1, 4, 1, 1, 0, 1, 1, 1, 1, 1, 1,
     4, 4, 4, 4, 4, 4, 0, 0, 0, 4, 1, 2, 2, 2, 2, 2, 2, 1, 4, 0, 0, 0, 4, 4, 4, 4, 4, 4,
     1, 1, 1, 1, 1, 1, 0, 1, 1, 4, 1, 2, 2, 2, 2, 2, 2, 1, 4, 1, 1, 0, 1, 1, 1, 1, 1, 1,
@@ -130,7 +130,29 @@ document.getElementById("startGameBtn").addEventListener("click", function () {
         if (squares[pacmanCurrentIndex].classList.contains("superfood")) {
             points += 20;
             pointsDisplay.innerHTML = points;
-            squares[pacmanCurrentIndex].classList.remove("superfood")
+            squares[pacmanCurrentIndex].classList.remove("superfood");
+            //enemies frozen
+            clearInterval(enemy1Interval);
+            clearInterval(enemy2Interval);
+            clearInterval(enemy3Interval);
+            clearInterval(enemy4Interval);
+
+            if (!enemiesFrozen) {
+                
+                clearInterval(enemy1Interval);
+                clearInterval(enemy2Interval);
+                clearInterval(enemy3Interval);
+                clearInterval(enemy4Interval);
+
+                enemiesFrozen = true;
+
+                //5 seconds freeze enemies
+                setTimeout(() => {
+                    restartEnemyMovement();
+                    enemiesFrozen = false; 
+                }, 5000);
+            }
+
 
         }
         gameWin();
@@ -187,6 +209,26 @@ document.getElementById("startGameBtn").addEventListener("click", function () {
     let enemy4Interval = setInterval(function () {
         enemy4CurrentIndex = moveEnemy(enemy4CurrentIndex, "enemy4");
     }, 150);
+
+    //to make enemies move after superfood timer
+
+    function restartEnemyMovement() {
+        enemy1Interval = setInterval(function () {
+            enemy1CurrentIndex = moveEnemy(enemy1CurrentIndex, "enemy1");
+        }, 150);
+
+        enemy2Interval = setInterval(function () {
+            enemy2CurrentIndex = moveEnemy(enemy2CurrentIndex, "enemy2");
+        }, 150);
+
+        enemy3Interval = setInterval(function () {
+            enemy3CurrentIndex = moveEnemy(enemy3CurrentIndex, "enemy3");
+        }, 150);
+
+        enemy4Interval = setInterval(function () {
+            enemy4CurrentIndex = moveEnemy(enemy4CurrentIndex, "enemy4");
+        }, 150);
+    }
 
     // game over scenarios
 
