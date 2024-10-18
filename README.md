@@ -9,6 +9,11 @@ For Ironhack Module 1 project, this Pacman game was built using JavaScript, HTML
 - Game Win & Over: Win by collecting all the food or lose if an enemy catches Pacman.
 - Tunnels: Pass through tunnels that teleport Pacman from one side of the grid to the other.
 
+### Check the demo
+You can play it here: 
+https://mavictorino.github.io/project_1-TheGame/
+
+
 ### How to Play
 1. Click the "Start Game" button to begin. The game will not start automatically.
 2. Control Pacman: Use the arrow keys to move Pacman:
